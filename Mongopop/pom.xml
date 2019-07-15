@@ -19,9 +19,23 @@
             <artifactId>mongo-java-driver</artifactId>
             <version>3.11.0-beta4</version>
         </dependency>
-
-
+        <dependency>
+            <groupId>org.apache.tinkerpop</groupId>
+            <artifactId>gremlin-test</artifactId>
+            <version>3.4.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tinkerpop</groupId>
+            <artifactId>tinkergraph-gremlin</artifactId>
+            <version>3.2.0-incubating</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
-
+    
+    <properties>
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
+    </properties>
 </project>
 
