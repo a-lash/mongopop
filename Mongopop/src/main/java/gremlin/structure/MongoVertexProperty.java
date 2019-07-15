@@ -7,7 +7,15 @@ import org.apache.tinkerpop.gremlin.structure.VertexProperty;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class MongoVertexProperty implements VertexProperty {
+public class MongoVertexProperty<T> implements VertexProperty {
+
+    public MongoVertexProperty(MongoVertex vertex, String key, T value) {
+
+    }
+
+    public MongoVertexProperty(MongoVertex vertex, String key, T value, Cardinality cardinality) {
+
+    }
     @Override
     public String key() {
         return null;

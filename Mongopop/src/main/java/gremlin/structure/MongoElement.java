@@ -7,7 +7,7 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.util.ElementHelper;
 import org.bson.Document;
 
-abstract class MongoElement implements Element {
+public abstract class MongoElement implements Element {
     MongoCollection<Document> collection;
     MongoGraph graph;
     Document document;
