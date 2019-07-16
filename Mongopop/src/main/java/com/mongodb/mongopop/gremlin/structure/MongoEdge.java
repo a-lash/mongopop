@@ -29,9 +29,9 @@ public class MongoEdge extends MongoElement  implements Edge {
         document.append(T.label.toString(), label);
         document.append("inVertex", inVertex);
         document.append("outVertex", outVertex);
-    }
 
-    private MongoCollection<Document> collection = graph.edges;
+        collection = graph.edges;
+    }
 
     public Object id() {
         //TODO(implement)

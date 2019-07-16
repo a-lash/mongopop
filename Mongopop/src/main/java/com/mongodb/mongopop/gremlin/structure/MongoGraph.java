@@ -36,11 +36,11 @@ public class MongoGraph implements Graph {
     private static final String MONGODB_CONFIG_PREFIX = "gremlin.mongodb";
 
     public MongoGraph(Configuration conf) {
+        System.out.println("is running...");
         // ConnectionString url = new ConnectionString(conf.getString(MONGODB_CONFIG_PREFIX + ".connectionUrl"));
         ConnectionString url = new ConnectionString("mongodb+srv://tpop:TinkerPop3@mongopop-hakmv.mongodb.net/mongopop?retryWrites=true&w=majority");
         this.client = MongoClients.create(url);
         this.db = client.getDatabase(url.getDatabase());
-        System.out.println("DB NAME: " + db.getName());
         this.vertices = db.getCollection("vertices");
         this.edges = db.getCollection("edges");
         this.variables = new TinkerGraphVariables();
