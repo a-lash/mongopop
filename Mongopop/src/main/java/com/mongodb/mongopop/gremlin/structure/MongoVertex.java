@@ -32,15 +32,14 @@ public class MongoVertex extends MongoElement implements Vertex{
             document.append("properties", properties);
         }
 
-        collection = graph.getVertices();
+        collection = graph.vertices;
     }
 
     protected MongoVertex(Document document, MongoGraph graph, String label) {
         super(document, graph);
+        collection = graph.vertices;
         document.append(T.label.getAccessor(), label);
     }
-
-    private MongoCollection<Document> collection = graph.edges;
 
     @Override
     public Iterator<Edge> edges(Direction direction, String... edgeLabels) {

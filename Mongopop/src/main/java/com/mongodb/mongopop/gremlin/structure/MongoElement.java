@@ -26,7 +26,7 @@ public abstract class MongoElement implements Element {
     }
 
     public Object id() {
-        return this.document.get("id");
+        return this.document.get("_id");
     }
 
     public String label() {
@@ -37,10 +37,12 @@ public abstract class MongoElement implements Element {
         collection.deleteOne(Filters.eq(document.get("_id")));
     }
 
+    @Override
     public boolean equals(Object other) {
         return ElementHelper.areEqual(this, other);
     }
 
+    @Override
     public int hashCode() {
         return ElementHelper.hashCode(this);
     }

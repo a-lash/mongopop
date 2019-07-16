@@ -83,12 +83,7 @@ public class MongoGraph implements Graph {
 
     @Override
     public Iterator<Edge> edges(Object... edgeIds) {
-        ArrayList ids = (new ArrayList(Arrays.asList(edgeIds))).stream().map(it -> ObjectId(it.toString()));
-        if (edgeIds.length == 0) {
-            return edges.find().map(it -> (Edge)new MongoEdge(it, this)).iterator();
-        }
-
-        return edges.find(Filters.in("_id", ids)).map(it -> (Edge)new MongoEdge(it, this)).iterator();
+      return null;
     }
 
 //    public Iterator<Edge> edges(Direction direction, Object... edgeIds) {
