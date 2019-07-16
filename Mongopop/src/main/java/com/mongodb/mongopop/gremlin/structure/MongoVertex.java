@@ -1,5 +1,6 @@
 package com.mongodb.mongopop.gremlin.structure;
 
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReturnDocument;
 import com.mongodb.client.model.Updates;
@@ -32,21 +33,8 @@ public class MongoVertex extends MongoElement implements Vertex{
         }
     }
 
-    public MongoEdge addEdge(String label, Vertex inVertex, Object... keyValues) {
-        //TODO(implement)
-        return null;
-//        MongoEdge mongoEdge = new MongoEdge(label, this.id(), inVertex.id(), this.graph(), keyValues);
-//        mongoEdge.save();
-//        return mongoEdge;
-    }
-
-
-    public <V> VertexProperty<V> property(VertexProperty.Cardinality cardinality, String key, V value, Object... keyValues) {
-        //TODO(implement)
-        document = collection.findOneAndUpdate(Filters.eq(document.get("_id")),
-                Updates.set(key, value),
-        new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER));
-        return new MongoVertexProperty<V>(this, key, value, cardinality);
+    public MongoCollection<Document> getCollection() {
+        return graph.vertices;
     }
 
     @Override
@@ -55,6 +43,40 @@ public class MongoVertex extends MongoElement implements Vertex{
         return null;
     }
 
+    public <V> VertexProperty<V> property(String key, V value, Object... keyValues) {
+        document = collection.findOneAndUpdate(Filters.eq(document.get("_id")),
+                Updates.set(key, value),
+                new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER));
+        return new MongoVertexProperty<V>(this, key, value);
+    }
+
+    public void remove() {
+        collection.deleteOne(Filters.eq(document.get("_id")));
+    }
+
+    public MongoEdge addEdge(String label, Vertex inVertex, Object... keyValues) {
+        //TODO(waiting on Edge implementation)
+        return null;
+//        MongoEdge mongoEdge = new MongoEdge(label, this.id(), inVertex.id(), this.graph(), keyValues);
+//        mongoEdge.save();
+//        return mongoEdge;
+    }
+
+    public <V> VertexProperty<V> property(VertexProperty.Cardinality cardinality, String key, V value, Object... keyValues) {
+        document = collection.findOneAndUpdate(Filters.eq(document.get("_id")),
+                Updates.set(key, value),
+        new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER));
+        return new MongoVertexProperty<V>(this, key, value, cardinality);
+    }
+
+    public <V> Iterator<VertexProperty<V>> properties(String... propertyKeys) {
+        Document document = null;
+        document = collection.find(Filters.eq(document.get("_id"))).first();
+        Iterator<VertexProperty<V>> result = document.entrySet().stream().filter(x -> x.getKey() != "_id" && x.getKey() != "label"
+                && (Arrays.stream(propertyKeys).anyMatch(x.getKey()::equals) || propertyKeys.length == 0))
+                .map(x -> (VertexProperty<V>)(new MongoVertexProperty<V>(this, x.getKey(), (V)(x.getValue())))).collect(Collectors.toList()).iterator();
+        return result;
+    }
 
     public Iterator<Vertex> vertices(Direction direction, String... edgeLabels) {
         Iterator<Edge> edgesIterator = edges(direction, edgeLabels);
@@ -74,19 +96,6 @@ public class MongoVertex extends MongoElement implements Vertex{
 
     public Graph graph() {
         return super.graph();
-    }
-
-    public void remove() {
-        collection.deleteOne(Filters.eq(document.get("_id")));
-    }
-
-    public <V> Iterator<VertexProperty<V>> properties(String... propertyKeys) {
-        Document document = null;
-        document = collection.find(Filters.eq(document.get("_id"))).first();
-        Iterator<VertexProperty<V>> result = document.entrySet().stream().filter(x -> x.getKey() != "_id" && x.getKey() != "label"
-                && (Arrays.stream(propertyKeys).anyMatch(x.getKey()::equals) || propertyKeys.length == 0))
-                .map(x -> (VertexProperty<V>)(new MongoVertexProperty<V>(this, x.getKey(), (V)(x.getValue())))).collect(Collectors.toList()).iterator();
-        return result;
     }
 
 
