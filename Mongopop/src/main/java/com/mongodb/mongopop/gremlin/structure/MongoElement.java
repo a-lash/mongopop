@@ -1,4 +1,4 @@
-package gremlin.structure;
+package com.mongodb.mongopop.gremlin.structure;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;

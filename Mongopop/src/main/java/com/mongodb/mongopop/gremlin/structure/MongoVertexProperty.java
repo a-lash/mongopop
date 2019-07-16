@@ -1,4 +1,4 @@
-package gremlin.structure;
+package com.mongodb.mongopop.gremlin.structure;
 
 import org.apache.tinkerpop.gremlin.structure.Property;
 import org.apache.tinkerpop.gremlin.structure.Vertex;

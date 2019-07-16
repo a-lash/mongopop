@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.mongodb.mongopop.gremlin;
 
-import gremlin.structure.*;
+import com.mongodb.mongopop.gremlin.structure.*;
 import org.apache.tinkerpop.gremlin.jsr223.AbstractGremlinPlugin;
 import org.apache.tinkerpop.gremlin.jsr223.DefaultImportCustomizer;
 import org.apache.tinkerpop.gremlin.jsr223.ImportCustomizer;

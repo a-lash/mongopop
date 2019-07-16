@@ -1,4 +1,4 @@
-package gremlin.structure;
+package com.mongodb.mongopop.gremlin.structure;
 
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReturnDocument;
@@ -7,7 +7,6 @@ import com.mongodb.client.model.FindOneAndUpdateOptions;
 import org.apache.tinkerpop.gremlin.structure.*;
 import org.bson.Document;
 
-import java.awt.Label;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.Collectors;
@@ -18,18 +17,19 @@ public class MongoVertex extends MongoElement implements Vertex{
 
     protected MongoVertex(Document document, MongoGraph graph, Object... keyValues) {
         super(document, graph);
-
+        Document properties = new Document();
         for(int i = 0; i < keyValues.length; i += 2) {
             Object[] chunk = Arrays.copyOfRange(keyValues, i, Math.min(keyValues.length, i + 2));
             String key = chunk[0].toString();
-            String toAppend = (key == T.id.getAccessor()) ? "_id" : key;
-            document.append(toAppend, chunk[1]);
-        }
-    }
+            if(key == T.id.getAccessor()) {
+                document.append("_id", chunk[1]);
+            }
+            else {
+                properties.append(key, chunk[1]);
+            }
 
-    protected MongoVertex(Document document, MongoGraph graph, String label) {
-        super(document, graph);
-        document.append(T.label.getAccessor(), label);
+            document.append("properties", properties);
+        }
     }
 
     public MongoEdge addEdge(String label, Vertex inVertex, Object... keyValues) {

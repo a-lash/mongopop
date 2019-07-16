@@ -1,8 +1,8 @@
-package gremlin.structure;
+package com.mongodb.mongopop.gremlin.structure;
 
 import org.apache.tinkerpop.gremlin.structure.StructureStandardSuite;
 import org.junit.runner.RunWith;
-import gremlin.structure.*;
+import com.mongodb.mongopop.gremlin.structure.*;
 import org.apache.tinkerpop.gremlin.GraphProviderClass;
 
 @RunWith(StructureStandardSuite.class)

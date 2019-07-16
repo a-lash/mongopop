@@ -1,8 +1,7 @@
-package gremlin.structure;
+package com.mongodb.mongopop.gremlin.structure;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.stream.Collectors;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.client.MongoClient;
@@ -33,7 +32,7 @@ public class MongoGraph implements Graph {
 
     private static final String MONGODB_CONFIG_PREFIX = "gremlin.mongodb";
 
-    protected MongoGraph(Configuration conf) {
+    public MongoGraph(Configuration conf) {
         ConnectionString url = new ConnectionString(conf.getString(MONGODB_CONFIG_PREFIX + ".connectionUrl"));
         this.client = MongoClients.create(url);
         this.db = client.getDatabase(url.getDatabase());
