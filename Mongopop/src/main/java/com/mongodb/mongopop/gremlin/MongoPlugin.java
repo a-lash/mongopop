@@ -25,7 +25,7 @@ import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerProperty;
 @SuppressWarnings("ALL")
 public final class MongoPlugin extends AbstractGremlinPlugin {
 
-    private static final String NAME = "tinkerpop.mongo";
+    private static final String NAME = "mongopop.mongo";
 
     private static final ImportCustomizer imports;
 

@@ -51,12 +51,14 @@ public class MongoGraph implements Graph {
 
     public Vertex addVertex(Object... keyValues) {
         MongoVertex mongoVertex = null;
-        if (keyValues.length > 0 && keyValues[0].getClass().equals(T.label)) {
-            mongoVertex = new MongoVertex(new Document(), this, keyValues[1].toString());
-        } else {
-            mongoVertex = new MongoVertex(new Document(), this, keyValues);
-        }
+        mongoVertex = new MongoVertex(new Document(), this, keyValues);
+        mongoVertex.save();
+        return mongoVertex;
+    }
 
+    public Vertex addVertex(String label) {
+        MongoVertex mongoVertex = null;
+        mongoVertex = new MongoVertex(new Document(), this, label);
         mongoVertex.save();
         return mongoVertex;
     }

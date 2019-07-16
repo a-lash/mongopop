@@ -35,6 +35,11 @@ public class MongoVertex extends MongoElement implements Vertex{
         collection = graph.getVertices();
     }
 
+    protected MongoVertex(Document document, MongoGraph graph, String label) {
+        super(document, graph);
+        document.append(T.label.getAccessor(), label);
+    }
+
     private MongoCollection<Document> collection = graph.edges;
 
     @Override
@@ -55,7 +60,6 @@ public class MongoVertex extends MongoElement implements Vertex{
     }
 
     public MongoEdge addEdge(String label, Vertex inVertex, Object... keyValues) {
-        //TODO(waiting on Edge implementation)
         MongoEdge mongoEdge = new MongoEdge(label, this.id(), inVertex.id(), document, graph, keyValues);
         mongoEdge.save();
         return mongoEdge;
