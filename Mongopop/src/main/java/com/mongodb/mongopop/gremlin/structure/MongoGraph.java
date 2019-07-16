@@ -18,9 +18,6 @@ import org.apache.tinkerpop.gremlin.structure.*;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraphVariables;
 import org.bson.Document;
 
-import static com.sun.org.apache.xml.internal.security.keys.keyresolver.KeyResolver.iterator;
-import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal.Symbols.map;
-
 @Graph.OptIn(Graph.OptIn.SUITE_STRUCTURE_STANDARD)
 public class MongoGraph implements Graph {
 
@@ -73,32 +70,41 @@ public class MongoGraph implements Graph {
         return ((Iterator<Vertex>) vertices.find(Filters.in("_id", ids)).map(it -> new MongoVertex(it, this)));
     }
 
-    public Iterator<Edge> edges(Direction direction, Object... edgeIds) {
+    @Override
+    public Iterator<Edge> edges(Object... edgeIds) {
+        ArrayList ids = (new ArrayList(Arrays.asList(edgeIds))).stream().map(it -> ObjectId(it.toString()));
         if (edgeIds.length == 0) {
-            return this.edges
-                    .find(Filters.eq("inVertex", ObjectId(this.id().toString())))
-                    .map(it -> new MongoEdge(it, this)).collect(Collectors.toList()).iterator();
+            return edges.find().map(it -> (Edge)new MongoEdge(it, this)).iterator();
         }
-        ArrayList<Object> labels = new ArrayList(Arrays.asList(edgeIds));
-        ArrayList<Edge> ans = new ArrayList<>();
-        if (direction == Direction.IN || direction == Direction.BOTH) {
-            ans.addAll(graph.edges
-                    .find(Filters.and(Filters.eq("outVertex", ObjectId(this.id().toString())), Filters.in("label", labels)))
-                    .map(it -> new MongoEdge(it, graph)));
-        }
-        if (direction == Direction.OUT || direction == Direction.BOTH) {
-            ans.addAll(graph.edges
-                    .find(Filters.and(Filters.eq("inVertex", ObjectId(this.id().toString())), Filters.in("label", labels)))
-                    .map(it -> new MongoEdge(it, graph)));
-        }
-        return ans.iterator();
-        /*// TODO move to MongoEdge
-        return graph.edges
-                .find(Filters.and(Filters.eq("inVertex", ObjectId(this.id().toString())), Filters.`in`("label", labels)))
-                .map { MongoEdge(it, graph) }
-                .iterator()*/
+
+        return edges.find(Filters.in("_id", ids)).map(it -> (Edge)new MongoEdge(it, this)).iterator();
     }
-    }
+
+//    public Iterator<Edge> edges(Direction direction, Object... edgeIds) {
+//        if (edgeIds.length == 0) {
+//            return this.edges
+//                    .find(Filters.eq("inVertex", ObjectId(this.id().toString())))
+//                    .map(it -> new MongoEdge(it, this)).collect(Collectors.toList()).iterator();
+//        }
+//        ArrayList<Object> labels = new ArrayList(Arrays.asList(edgeIds));
+//        ArrayList<Edge> ans = new ArrayList<>();
+//        if (direction == Direction.IN || direction == Direction.BOTH) {
+//            ans.addAll(graph.edges
+//                    .find(Filters.and(Filters.eq("outVertex", ObjectId(this.id().toString())), Filters.in("label", labels)))
+//                    .map(it -> new MongoEdge(it, graph)));
+//        }
+//        if (direction == Direction.OUT || direction == Direction.BOTH) {
+//            ans.addAll(graph.edges
+//                    .find(Filters.and(Filters.eq("inVertex", ObjectId(this.id().toString())), Filters.in("label", labels)))
+//                    .map(it -> new MongoEdge(it, graph)));
+//        }
+//        return ans.iterator();
+//        /*// TODO move to MongoEdge
+//        return graph.edges
+//                .find(Filters.and(Filters.eq("inVertex", ObjectId(this.id().toString())), Filters.`in`("label", labels)))
+//                .map { MongoEdge(it, graph) }
+//                .iterator()*/
+//    }
 
     public Transaction tx() {
         //TODO(implemented)
