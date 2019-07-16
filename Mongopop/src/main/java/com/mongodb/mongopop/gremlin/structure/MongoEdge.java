@@ -20,6 +20,7 @@ public class MongoEdge extends MongoElement  implements Edge {
 
     public MongoEdge(Document document, MongoGraph graph) {
         super(document, graph);
+        collection = graph.edges;
     }
 
     protected MongoEdge(String label, Object inVertex, Object outVertex, Document document, MongoGraph graph, Object... keyValues) {
@@ -30,16 +31,14 @@ public class MongoEdge extends MongoElement  implements Edge {
             String toAppend = (key == T.id.getAccessor()) ? "_id" : key;
             document.append(toAppend, chunk[1]);
         }
+        collection = graph.edges;
         document.append(T.label.toString(), label);
         document.append("inVertex", inVertex);
         document.append("outVertex", outVertex);
-
-        collection = graph.edges;
     }
 
     public Object id() {
-        //TODO(implement)
-        return null;
+        return super.id();
     }
 
     public Vertex inVertex() {
@@ -63,17 +62,15 @@ public class MongoEdge extends MongoElement  implements Edge {
     }
 
     public Graph graph() {
-        //TODO(implement)
-        return null;
+        return super.graph();
     }
     
     public String label() {
-        //TODO(implement)
-        return null;
+        return super.label();
     }
 
     public void remove() {
-        //TODO(implement)
+        super.remove();
     }
 
     public <V> Iterator<Property<V>> properties(String... propertyKeys) {
