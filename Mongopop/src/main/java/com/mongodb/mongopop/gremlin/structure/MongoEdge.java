@@ -18,6 +18,10 @@ import org.bson.Document;
 
 public class MongoEdge extends MongoElement  implements Edge {
 
+    public MongoEdge(Document document, MongoGraph graph) {
+        super(document, graph);
+    }
+
     protected MongoEdge(String label, Object inVertex, Object outVertex, Document document, MongoGraph graph, Object... keyValues) {
         super(document, graph);
         for(int i = 0; i < keyValues.length; i += 2) {

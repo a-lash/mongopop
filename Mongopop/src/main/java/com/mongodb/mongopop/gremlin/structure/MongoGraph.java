@@ -1,7 +1,9 @@
 package com.mongodb.mongopop.gremlin.structure;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.stream.Collectors;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.client.MongoClient;
@@ -79,9 +81,41 @@ public class MongoGraph implements Graph {
         return ((Iterator<Vertex>) vertices.find(Filters.in("_id", ids)).map(it -> new MongoVertex(it, this)));
     }
 
+    @Override
     public Iterator<Edge> edges(Object... edgeIds) {
-        return null;
+        ArrayList ids = (new ArrayList(Arrays.asList(edgeIds))).stream().map(it -> ObjectId(it.toString()));
+        if (edgeIds.length == 0) {
+            return edges.find().map(it -> (Edge)new MongoEdge(it, this)).iterator();
+        }
+
+        return edges.find(Filters.in("_id", ids)).map(it -> (Edge)new MongoEdge(it, this)).iterator();
     }
+
+//    public Iterator<Edge> edges(Direction direction, Object... edgeIds) {
+//        if (edgeIds.length == 0) {
+//            return this.edges
+//                    .find(Filters.eq("inVertex", ObjectId(this.id().toString())))
+//                    .map(it -> new MongoEdge(it, this)).collect(Collectors.toList()).iterator();
+//        }
+//        ArrayList<Object> labels = new ArrayList(Arrays.asList(edgeIds));
+//        ArrayList<Edge> ans = new ArrayList<>();
+//        if (direction == Direction.IN || direction == Direction.BOTH) {
+//            ans.addAll(graph.edges
+//                    .find(Filters.and(Filters.eq("outVertex", ObjectId(this.id().toString())), Filters.in("label", labels)))
+//                    .map(it -> new MongoEdge(it, graph)));
+//        }
+//        if (direction == Direction.OUT || direction == Direction.BOTH) {
+//            ans.addAll(graph.edges
+//                    .find(Filters.and(Filters.eq("inVertex", ObjectId(this.id().toString())), Filters.in("label", labels)))
+//                    .map(it -> new MongoEdge(it, graph)));
+//        }
+//        return ans.iterator();
+//        /*// TODO move to MongoEdge
+//        return graph.edges
+//                .find(Filters.and(Filters.eq("inVertex", ObjectId(this.id().toString())), Filters.`in`("label", labels)))
+//                .map { MongoEdge(it, graph) }
+//                .iterator()*/
+//    }
 
     public Transaction tx() {
         //TODO(implemented)

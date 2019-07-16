@@ -40,9 +40,7 @@ public class MongoVertex extends MongoElement implements Vertex{
         document.append(T.label.getAccessor(), label);
     }
 
-    public MongoCollection<Document> getCollection() {
-        return graph.vertices;
-    }
+    private MongoCollection<Document> collection = graph.edges;
 
     @Override
     public Iterator<Edge> edges(Direction direction, String... edgeLabels) {
