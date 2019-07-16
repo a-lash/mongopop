@@ -38,6 +38,14 @@ public class MongoEdge extends MongoElement  implements Edge {
         return null;
     }
 
+    public Vertex inVertex() {
+        return (Vertex) document.get("inVertex");
+    }
+
+    public Vertex outVertex() {
+        return (Vertex) document.get("outVertex");
+    }
+
     public Iterator<Vertex> vertices(Direction direction) {
         //TODO(caching)
         ArrayList<Vertex> ans = new ArrayList<Vertex>();

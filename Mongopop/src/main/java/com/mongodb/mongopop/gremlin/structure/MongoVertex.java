@@ -62,7 +62,6 @@ public class MongoVertex extends MongoElement implements Vertex{
     }
 
     public MongoEdge addEdge(String label, Vertex inVertex, Object... keyValues) {
-        //TODO(waiting on Edge implementation)
         MongoEdge mongoEdge = new MongoEdge(label, this.id(), inVertex.id(), document, graph, keyValues);
         mongoEdge.save();
         return mongoEdge;
