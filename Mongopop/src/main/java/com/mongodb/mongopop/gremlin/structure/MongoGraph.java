@@ -1,8 +1,7 @@
-package gremlin.structure;
+package com.mongodb.mongopop.gremlin.structure;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.stream.Collectors;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.client.MongoClient;
@@ -15,6 +14,7 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.tinkerpop.gremlin.process.computer.GraphComputer;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraphVariables;
@@ -32,7 +32,7 @@ public class MongoGraph implements Graph {
 
     private static final String MONGODB_CONFIG_PREFIX = "gremlin.mongodb";
 
-    protected MongoGraph(Configuration conf) {
+    public MongoGraph(Configuration conf) {
         ConnectionString url = new ConnectionString(conf.getString(MONGODB_CONFIG_PREFIX + ".connectionUrl"));
         this.client = MongoClients.create(url);
         this.db = client.getDatabase(url.getDatabase());
@@ -43,9 +43,14 @@ public class MongoGraph implements Graph {
     }
 
     public Vertex addVertex(Object... keyValues) {
-        MongoVertex mongoVertex = new MongoVertex(this, *keyValues);
-        mongoVertex.save();
+        MongoVertex mongoVertex = null;
+        if (keyValues.length > 0 && keyValues[0].getClass().equals(T.label)) {
+            mongoVertex = new MongoVertex(new Document(), this, keyValues[1].toString());
+        } else {
+            mongoVertex = new MongoVertex(new Document(), this, keyValues);
+        }
 
+        mongoVertex.save();
         return mongoVertex;
     }
 

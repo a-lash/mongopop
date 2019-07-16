@@ -1,9 +1,10 @@
-package gremlin.structure;
+package com.mongodb.mongopop.gremlin.structure;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoInternalException;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import com.mongodb.mongopop.gremlin.structure.*;
 import org.apache.commons.configuration.Configuration;
 import org.apache.tinkerpop.gremlin.AbstractGraphProvider;
 import org.apache.tinkerpop.gremlin.LoadGraphWith.GraphData;
