@@ -20,6 +20,7 @@ import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraphVariables;
 import org.bson.Document;
 
+@Graph.OptIn(Graph.OptIn.SUITE_STRUCTURE_STANDARD)
 public class MongoGraph implements Graph {
 
     private final MongoClient client;
