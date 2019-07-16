@@ -15,6 +15,7 @@ import org.apache.commons.configuration.Configuration;
 import org.apache.tinkerpop.gremlin.process.computer.GraphComputer;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.structure.T;
 import org.apache.tinkerpop.gremlin.structure.Transaction;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraphVariables;
@@ -43,9 +44,14 @@ public class MongoGraph implements Graph {
     }
 
     public Vertex addVertex(Object... keyValues) {
-        MongoVertex mongoVertex = new MongoVertex(this, *keyValues);
-        mongoVertex.save();
+        MongoVertex mongoVertex = null;
+        if (keyValues.length > 0 && keyValues[0].getClass().equals(T.label)) {
+            mongoVertex = new MongoVertex(new Document(), this, keyValues[1].toString());
+        } else {
+            mongoVertex = new MongoVertex(new Document(), this, keyValues);
+        }
 
+        mongoVertex.save();
         return mongoVertex;
     }
 

@@ -7,6 +7,7 @@ import com.mongodb.client.model.FindOneAndUpdateOptions;
 import org.apache.tinkerpop.gremlin.structure.*;
 import org.bson.Document;
 
+import java.awt.Label;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.Collectors;
@@ -15,14 +16,20 @@ import java.util.stream.StreamSupport;
 
 public class MongoVertex extends MongoElement implements Vertex{
 
-    protected MongoVertex(Document document, MongoGraph graph, Object[] keyValues) {
+    protected MongoVertex(Document document, MongoGraph graph, Object... keyValues) {
         super(document, graph);
+
         for(int i = 0; i < keyValues.length; i += 2) {
             Object[] chunk = Arrays.copyOfRange(keyValues, i, Math.min(keyValues.length, i + 2));
             String key = chunk[0].toString();
             String toAppend = (key == T.id.getAccessor()) ? "_id" : key;
             document.append(toAppend, chunk[1]);
         }
+    }
+
+    protected MongoVertex(Document document, MongoGraph graph, String label) {
+        super(document, graph);
+        document.append(T.label.getAccessor(), label);
     }
 
     public MongoEdge addEdge(String label, Vertex inVertex, Object... keyValues) {
