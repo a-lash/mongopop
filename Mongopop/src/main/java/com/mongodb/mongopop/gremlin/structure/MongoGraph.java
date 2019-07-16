@@ -26,8 +26,8 @@ public class MongoGraph implements Graph {
 
     private final MongoClient client;
     final MongoCollection<Document> vertices;
-    private final MongoCollection<Document> edges;
-    private final MongoDatabase db;
+    final MongoCollection<Document> edges;
+    final MongoDatabase db;
     private final TinkerGraphVariables variables;
     private final Configuration conf;
 
