@@ -27,9 +27,9 @@ import org.bson.Document;
 public class MongoGraph implements Graph {
 
     private final MongoClient client;
-    private final MongoCollection<Document> vertices;
-    private final MongoCollection<Document> edges;
-    private final MongoDatabase db;
+    final MongoCollection<Document> vertices;
+    final MongoCollection<Document> edges;
+    final MongoDatabase db;
     private final TinkerGraphVariables variables;
     private final Configuration conf;
 
