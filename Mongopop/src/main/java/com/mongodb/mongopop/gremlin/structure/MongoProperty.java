@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package gremlin.structure;
+package com.mongodb.mongopop.gremlin.structure;
 
 import org.apache.tinkerpop.gremlin.structure.Element;
 import org.apache.tinkerpop.gremlin.structure.Property;
