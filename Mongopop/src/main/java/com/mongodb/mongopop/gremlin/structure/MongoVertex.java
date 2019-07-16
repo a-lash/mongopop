@@ -30,6 +30,8 @@ public class MongoVertex extends MongoElement implements Vertex{
 
             document.append("properties", properties);
         }
+
+        collection = graph.getVertices();
     }
 
     public MongoEdge addEdge(String label, Vertex inVertex, Object... keyValues) {
