@@ -15,8 +15,14 @@ import java.util.stream.StreamSupport;
 
 public class MongoVertex extends MongoElement implements Vertex{
 
-    protected MongoVertex(Document document, MongoGraph graph) {
+    protected MongoVertex(Document document, MongoGraph graph, Object[] keyValues) {
         super(document, graph);
+        for(int i = 0; i < keyValues.length; i += 2) {
+            Object[] chunk = Arrays.copyOfRange(keyValues, i, Math.min(keyValues.length, i + 2));
+            String key = chunk[0].toString();
+            String toAppend = (key == T.id.getAccessor()) ? "_id" : key;
+            document.append(toAppend, chunk[1]);
+        }
     }
 
     public MongoEdge addEdge(String label, Vertex inVertex, Object... keyValues) {
