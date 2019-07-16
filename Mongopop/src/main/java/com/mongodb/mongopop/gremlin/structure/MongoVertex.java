@@ -56,10 +56,9 @@ public class MongoVertex extends MongoElement implements Vertex{
 
     public MongoEdge addEdge(String label, Vertex inVertex, Object... keyValues) {
         //TODO(waiting on Edge implementation)
-        return null;
-//        MongoEdge mongoEdge = new MongoEdge(label, this.id(), inVertex.id(), this.graph(), keyValues);
-//        mongoEdge.save();
-//        return mongoEdge;
+        MongoEdge mongoEdge = new MongoEdge(label, this.id(), inVertex.id(), document, graph, keyValues);
+        mongoEdge.save();
+        return mongoEdge;
     }
 
     public <V> VertexProperty<V> property(VertexProperty.Cardinality cardinality, String key, V value, Object... keyValues) {
