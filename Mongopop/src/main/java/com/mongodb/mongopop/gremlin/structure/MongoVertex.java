@@ -35,6 +35,11 @@ public class MongoVertex extends MongoElement implements Vertex{
         collection = graph.getVertices();
     }
 
+    protected MongoVertex(Document document, MongoGraph graph, String label) {
+        super(document, graph);
+        document.append(T.label.getAccessor(), label);
+    }
+
     public MongoCollection<Document> getCollection() {
         return graph.vertices;
     }
