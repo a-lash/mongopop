@@ -42,8 +42,7 @@ public class MongoGraph implements Graph {
 
     public MongoGraph(Configuration conf) {
         System.out.println("is running...");
-        // ConnectionString url = new ConnectionString(conf.getString(MONGODB_CONFIG_PREFIX + ".connectionUrl"));
-        ConnectionString url = new ConnectionString("mongodb+srv://tpop:TinkerPop3@mongopop-hakmv.mongodb.net/mongopop?retryWrites=true&w=majority");
+        ConnectionString url = new ConnectionString(conf.getString(MONGODB_CONFIG_PREFIX + ".connectionUrl"));
         this.client = MongoClients.create(url);
         this.db = client.getDatabase(url.getDatabase());
         this.vertices = db.getCollection("vertices");

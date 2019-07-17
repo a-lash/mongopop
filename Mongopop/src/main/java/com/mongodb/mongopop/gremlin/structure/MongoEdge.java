@@ -88,7 +88,7 @@ public class MongoEdge extends MongoElement  implements Edge {
         // document = collection.findOneAndUpdate(Filters.eq(document.get("_id")),
         //         Updates.set(key, value),
         //         FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER));
-        return new MongoProperty<V>(); //TODO
+        return new MongoProperty<V>(this, value, key); //TODO
     }
 
 }
