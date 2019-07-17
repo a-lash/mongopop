@@ -16,7 +16,7 @@ import org.apache.tinkerpop.gremlin.structure.*;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerProperty;
 import org.bson.Document;
 
-public class MongoEdge extends MongoElement  implements Edge {
+public class MongoEdge extends MongoElement implements Edge {
 
     public MongoEdge(Document document, MongoGraph graph) {
         super(document, graph);
