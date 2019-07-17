@@ -26,6 +26,9 @@ import org.bson.Document;
 
 @Graph.OptIn(Graph.OptIn.SUITE_STRUCTURE_STANDARD)
 @GraphFactoryClass(MongoGraphFactory.class)
+@Graph.OptOut(test = "org.apache.tinkerpop.gremlin.structure.TransactionTest",
+method = "*",
+reason = "not implemented")
 public class MongoGraph implements Graph {
 
     private final MongoClient client;
