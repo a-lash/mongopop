@@ -18,77 +18,46 @@ import org.bson.Document;
 
 public class MongoEdge extends MongoElement implements Edge {
 
-    public MongoEdge(Document document, MongoGraph graph) {
-        super(document, graph);
-        collection = graph.edges;
+    protected MongoEdge(Document document, MongoGraph graph) {
+        super();
+        // TODO Auto-generated constructor stub
     }
 
-    protected MongoEdge(String label, Object inVertex, Object outVertex, Document document, MongoGraph graph, Object... keyValues) {
-        super(document, graph);
-        for(int i = 0; i < keyValues.length; i += 2) {
-            Object[] chunk = Arrays.copyOfRange(keyValues, i, Math.min(keyValues.length, i + 2));
-            String key = chunk[0].toString();
-            String toAppend = (key == T.id.getAccessor()) ? "_id" : key;
-            document.append(toAppend, chunk[1]);
-        }
-        collection = graph.edges;
-        document.append(T.label.toString(), label);
-        document.append("inVertex", inVertex);
-        document.append("outVertex", outVertex);
-    }
-
-    public Object id() {
-        return super.id();
-    }
-
-    public Vertex inVertex() {
-        return (Vertex) document.get("inVertex");
-    }
-
-    public Vertex outVertex() {
-        //TODO: this cast caused an error
-        return (Vertex) document.get("outVertex");
-    }
-
-    public Iterator<Vertex> vertices(Direction direction) {
-        //TODO(caching)
-        ArrayList<Vertex> ans = new ArrayList<Vertex>();
-        if (direction == Direction.IN || direction == Direction.BOTH) {
-            ans.addAll(IteratorUtils.toList(graph.vertices(this.document.get("inVertex"))));
-        }
-        if (direction == Direction.OUT || direction == Direction.BOTH) {
-            ans.addAll(IteratorUtils.toList(graph.vertices(this.document.get("outVertex"))));
-        }
-        return ans.iterator();
-    }
-
-    public Graph graph() {
-        return super.graph();
-    }
-    
-    public String label() {
-        return super.label();
-    }
-
-    public void remove() {
-        super.remove();
-    }
-
-    public <V> Iterator<Property<V>> properties(String... propertyKeys) {
-        Document document = null;
-        //TODO: need to a null check below, either collection or find is null
-        document = collection.find(Filters.eq(document.get("_id"))).first();
-        Iterator<Property<V>> result = document.entrySet().stream().filter(x -> x.getKey() != "_id" && x.getKey() != "label" && x.getKey() != "inVertex" && x.getKey() != "outVertex")
-                .map(x -> (Property<V>)(new TinkerProperty<V>(this, x.getKey(), (V)(x.getValue())))).collect(Collectors.toList()).iterator();
-        return result;
-    }
-
+    @Override
     public <V> Property<V> property(String key, V value) {
-        //TODO(REALLY!!!???)
-        // document = collection.findOneAndUpdate(Filters.eq(document.get("_id")),
-        //         Updates.set(key, value),
-        //         FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER));
-        return new MongoProperty<V>(this, value, key); //TODO
+        return null;
     }
+
+    @Override
+    public Iterator<Vertex> vertices(Direction direction) {
+        return null;
+    }
+
+    @Override
+    public <V> Iterator<Property<V>> properties(String... propertyKeys) {
+        return null;
+    }
+
+    @Override
+    public Object id() {
+        return null;
+    }
+
+    @Override
+    public String label() {
+        return null;
+    }
+
+    @Override
+    public Graph graph() {
+        return null;
+    }
+
+    @Override
+    public void remove() {
+
+    }
+
+
 
 }

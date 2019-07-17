@@ -55,98 +55,49 @@ public class MongoGraph implements Graph {
         this.conf = conf;
     }
 
+    @Override
     public Vertex addVertex(Object... keyValues) {
-        MongoVertex mongoVertex = new MongoVertex(new Document(), this, keyValues);
-        mongoVertex.save();
-        return mongoVertex;
+        return null;
     }
 
-    public Vertex addVertex(String label) {
-        MongoVertex mongoVertex = new MongoVertex(new Document(), this, label);
-        mongoVertex.save();
-        return mongoVertex;
-    }
-
-    public Vertex addVertex() {
-        MongoVertex mongoVertex = new MongoVertex(new Document(), this, "vertex");
-        mongoVertex.save();
-        return mongoVertex;
-    }
-
+    @Override
     public <C extends GraphComputer> C compute(Class<C> graphComputerClass) throws IllegalArgumentException {
-        //TODO(implemented)
         return null;
     }
 
+    @Override
     public GraphComputer compute() throws IllegalArgumentException {
-        //TODO(implemented)        
         return null;
     }
 
+    @Override
     public Iterator<Vertex> vertices(Object... vertexIds) {
-        List<Object> ids = Arrays.asList(vertexIds).stream().map(it -> new ObjectId(it.toString())).collect(Collectors.toList());
-        if (vertexIds.length == 0) {
-            return vertices.find().map(it -> (Vertex)new MongoVertex(it, this)).iterator();
-        }
-        return vertices.find(Filters.in("_id", ids)).map(it -> (Vertex)new MongoVertex(it, this)).iterator();
-    }
-
-    public Iterator<Edge> edges(Object... edgeIds) {
-        List<Object> ids = Arrays.asList(edgeIds).stream().map(it -> new ObjectId(it.toString())).collect(Collectors.toList());
-        if (edgeIds.length == 0) {
-            return edges.find().map(it -> (Edge)new MongoEdge(it, this)).iterator();
-        }
-        return edges.find(Filters.in("_id", ids)).map(it -> (Edge)new MongoEdge(it, this)).iterator();
-    }
-
-//    public Iterator<Edge> edges(Direction direction, Object... edgeIds) {
-//        if (edgeIds.length == 0) {
-//            return this.edges
-//                    .find(Filters.eq("inVertex", ObjectId(this.id().toString())))
-//                    .map(it -> new MongoEdge(it, this)).collect(Collectors.toList()).iterator();
-//        }
-//        ArrayList<Object> labels = new ArrayList(Arrays.asList(edgeIds));
-//        ArrayList<Edge> ans = new ArrayList<>();
-//        if (direction == Direction.IN || direction == Direction.BOTH) {
-//            ans.addAll(graph.edges
-//                    .find(Filters.and(Filters.eq("outVertex", ObjectId(this.id().toString())), Filters.in("label", labels)))
-//                    .map(it -> new MongoEdge(it, graph)));
-//        }
-//        if (direction == Direction.OUT || direction == Direction.BOTH) {
-//            ans.addAll(graph.edges
-//                    .find(Filters.and(Filters.eq("inVertex", ObjectId(this.id().toString())), Filters.in("label", labels)))
-//                    .map(it -> new MongoEdge(it, graph)));
-//        }
-//        return ans.iterator();
-//        /*// TODO move to MongoEdge
-//        return graph.edges
-//                .find(Filters.and(Filters.eq("inVertex", ObjectId(this.id().toString())), Filters.`in`("label", labels)))
-//                .map { MongoEdge(it, graph) }
-//                .iterator()*/
-//    }
-
-    public Transaction tx() {
-        //TODO(implemented)
         return null;
     }
 
+    @Override
+    public Iterator<Edge> edges(Object... edgeIds) {
+        return null;
+    }
+
+    @Override
+    public Transaction tx() {
+        return null;
+    }
+
+    @Override
     public void close() throws Exception {
-        client.close();
+
     }
 
+    @Override
     public Variables variables() {
-        return variables;
+        return null;
     }
 
+    @Override
     public Configuration configuration() {
-        return conf;
+        return null;
     }
 
-    public MongoCollection<Document> getVertices() {
-        return vertices;
-    }
-
-    public MongoCollection<Document> getEdges() {
-        return edges;
-    }
 }

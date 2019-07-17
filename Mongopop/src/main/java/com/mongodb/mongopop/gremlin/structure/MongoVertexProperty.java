@@ -9,37 +9,19 @@ import java.util.NoSuchElementException;
 
 public class MongoVertexProperty<T> implements VertexProperty {
 
-    MongoVertex _vertex;
-    String _key;
-    T _value;
-
-    public MongoVertexProperty(MongoVertex vertex, String key, T value) {
-        _vertex = vertex;
-        _key = key;
-        _value = value;
-    }
-
-    public MongoVertexProperty(MongoVertex vertex, String key, T value, Cardinality cardinality) {
-
-    }
     @Override
     public String key() {
-        return _key;
+        return null;
     }
 
     @Override
     public Object value() throws NoSuchElementException {
-        return _value;
+        return null;
     }
 
     @Override
     public boolean isPresent() {
-        return true;
-    }
-
-    @Override
-    public Vertex element() {
-        return _vertex;
+        return false;
     }
 
     @Override
@@ -48,18 +30,24 @@ public class MongoVertexProperty<T> implements VertexProperty {
     }
 
     @Override
-    public Iterator<Property> properties(String... propertyKeys) {
-        return null;
-    }
-
-    @Override
     public Object id() {
-        return "";
+        return null;
     }
 
     @Override
     public <V> Property<V> property(String key, V value) {
         return null;
     }
+
+    @Override
+    public Vertex element() {
+        return null;
+    }
+
+    @Override
+    public Iterator properties(String... propertyKeys) {
+        return null;
+    }
+
 }
 //TODO: properties should not be equal to each other if they have different ids and they should be if ids are equal

@@ -16,38 +16,36 @@
 
 package com.mongodb.mongopop.gremlin.structure;
 
+import java.util.NoSuchElementException;
+
 import org.apache.tinkerpop.gremlin.structure.Element;
 import org.apache.tinkerpop.gremlin.structure.Property;
 
 public class MongoProperty<T> implements Property<T> {
 
-    Element element;
-    T value;
-    String key;
-
-    protected MongoProperty(Element el, T val, String k) {
-        element = el;
-        value = val;
-        key = k;
-    }
-
-    public Element element() {
-        return element;
-    }
-
-    public void remove() {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    public T value() {
-        return value;
-    }
-
-    public boolean isPresent() {
-        return !(this == null);
-    }
-
+    @Override
     public String key() {
-        return key;
+        return null;
     }
+
+    @Override
+    public T value() throws NoSuchElementException {
+        return null;
+    }
+
+    @Override
+    public boolean isPresent() {
+        return false;
+    }
+
+    @Override
+    public Element element() {
+        return null;
+    }
+
+    @Override
+    public void remove() {
+
+    }
+
 }
