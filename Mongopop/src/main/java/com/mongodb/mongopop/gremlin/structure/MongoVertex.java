@@ -60,14 +60,10 @@ public class MongoVertex extends MongoElement implements Vertex{
     }
 
     @Override
-    public MongoEdge addEdge(String label, Vertex inVertex, Object... keyValues) {
+    public MongoEdge addEdge(String label, Vertex inVertex, Object... keyValues) throws UnsupportedOperationException {
         //TODO: also figure out what a system key is and check that label is not that when adding edge
         if (label == "" || label == null) {
-            try {
-                throw new Exception();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            throw Vertex.Exceptions.userSuppliedIdsNotSupported();
         }
         MongoEdge mongoEdge = new MongoEdge(label, this.id(), inVertex.id(), document, graph, keyValues);
         mongoEdge.save();
