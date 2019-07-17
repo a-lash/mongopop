@@ -41,31 +41,31 @@ public class MongoGraphProvider extends AbstractGraphProvider {
     @Override
     public Map<String, Object> getBaseConfiguration(String graphName, Class<?> test, String testMethodName,
             GraphData loadGraphWith) {
-        // URL resource = this.getClass().getClassLoader().getResource("graph.properties");
+        URL resource = this.getClass().getClassLoader().getResource("config.properties");
        
-        // InputStream stream = null;
-        // try {
-        //     stream = resource.openStream();
-        // } catch (IOException e) {
-        //     // TODO Auto-generated catch block
-        //     e.printStackTrace();
-        // }
+        InputStream stream = null;
+        try {
+            stream = resource.openStream();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
-        // Properties props = new Properties();
-        // try {
-        //     props.load(stream);
-        // } catch (IOException e) {
-        //     // TODO Auto-generated catch block
-        //     e.printStackTrace();
-        // }
+        Properties props = new Properties();
+        try {
+            props.load(stream);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         HashMap<String, Object> configuration = new HashMap<String, Object>();
-        // configuration.put(Graph.GRAPH, MongoGraph.class.getName());
-        // for (Map.Entry<Object, Object> prop : props.entrySet()) {
-        //     if (prop.getKey().toString().startsWith("gremlin.mongodb")) {
-        //         configuration.put(prop.getKey().toString(), props.getProperty(prop.getKey().toString()));
-        //     }
-        // } 
+        configuration.put(Graph.GRAPH, MongoGraph.class.getName());
+        for (Map.Entry<Object, Object> prop : props.entrySet()) {
+            if (prop.getKey().toString().startsWith("gremlin.mongodb")) {
+                configuration.put(prop.getKey().toString(), props.getProperty(prop.getKey().toString()));
+            }
+        }
         configuration.put(Graph.GRAPH, MongoGraph.class.getName());
         
         return configuration;

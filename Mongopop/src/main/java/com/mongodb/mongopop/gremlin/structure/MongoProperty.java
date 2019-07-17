@@ -20,9 +20,19 @@ import org.apache.tinkerpop.gremlin.structure.Element;
 import org.apache.tinkerpop.gremlin.structure.Property;
 
 public class MongoProperty<T> implements Property<T> {
+
+    Element element;
+    T value;
+    String key;
+
+    protected MongoProperty(Element el, T val, String k) {
+        element = el;
+        value = val;
+        key = k;
+    }
+
     public Element element() {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        return null;
+        return element;
     }
 
     public void remove() {
@@ -30,17 +40,14 @@ public class MongoProperty<T> implements Property<T> {
     }
 
     public T value() {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        return null;
+        return value;
     }
 
     public boolean isPresent() {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        return false;
+        return !(this == null);
     }
 
     public String key() {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-        return null;
+        return key;
     }
 }
