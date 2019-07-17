@@ -17,6 +17,7 @@ public abstract class MongoElement implements Element {
         this.graph = graph;
     }
 
+    //TODO: document might need custom id? error is happening in the driver
     public void save() {
         collection.insertOne(document);
     }

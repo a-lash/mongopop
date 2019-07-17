@@ -50,8 +50,7 @@ public class MongoGraph implements Graph {
     }
 
     public Vertex addVertex(Object... keyValues) {
-        MongoVertex mongoVertex = null;
-        mongoVertex = new MongoVertex(new Document(), this, keyValues);
+        MongoVertex mongoVertex = new MongoVertex(new Document(), this, keyValues);
         mongoVertex.save();
         return mongoVertex;
     }
@@ -64,7 +63,7 @@ public class MongoGraph implements Graph {
     }
 
     public <C extends GraphComputer> C compute(Class<C> graphComputerClass) throws IllegalArgumentException {
-        //TODO(implemented)        
+        //TODO(implemented)
         return null;
     }
 
@@ -75,6 +74,7 @@ public class MongoGraph implements Graph {
 
     public Iterator<Vertex> vertices(Object... vertexIds) {
         String[] ids = Arrays.copyOf(vertexIds, vertexIds.length, String[].class);
+        //TODO: this cast throws an error
         if (vertexIds.length == 0) {
             return ((Iterator<Vertex>) (vertices.find().map(it -> new MongoVertex(it, this))));
         }
@@ -83,6 +83,7 @@ public class MongoGraph implements Graph {
 
     @Override
     public Iterator<Edge> edges(Object... edgeIds) {
+        // TODO: Type mismatch between edgeIds and String[]
         String[] ids = Arrays.copyOf(edgeIds, edgeIds.length, String[].class);
         if (edgeIds.length == 0) {
             return edges.find().map(it -> (Edge)new MongoEdge(it, this)).iterator();

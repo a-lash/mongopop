@@ -35,6 +35,7 @@ public class MongoVertex extends MongoElement implements Vertex{
         collection = graph.vertices;
     }
 
+    // TODO: should use default label of "vertex" if no label is specified
     protected MongoVertex(Document document, MongoGraph graph, String label) {
         super(document, graph);
         collection = graph.vertices;
@@ -58,13 +59,23 @@ public class MongoVertex extends MongoElement implements Vertex{
         collection.deleteOne(Filters.eq(document.get("_id")));
     }
 
+    @Override
     public MongoEdge addEdge(String label, Vertex inVertex, Object... keyValues) {
+        //TODO: also figure out what a system key is and check that label is not that when adding edge
+        if (label == "" || label == null) {
+            try {
+                throw new Exception();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         MongoEdge mongoEdge = new MongoEdge(label, this.id(), inVertex.id(), document, graph, keyValues);
         mongoEdge.save();
         return mongoEdge;
     }
 
     public <V> VertexProperty<V> property(VertexProperty.Cardinality cardinality, String key, V value, Object... keyValues) {
+        //TODO: need a null check here, either collection is null or find returns null
         document = collection.findOneAndUpdate(Filters.eq(document.get("_id")),
                 Updates.set(key, value),
         new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER));
