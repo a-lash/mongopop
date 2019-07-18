@@ -23,7 +23,7 @@ public abstract class MongoElement implements Element {
     }
 
     public Graph graph() {
-        return graph();
+        return graph;
     }
 
     public Object id() {
