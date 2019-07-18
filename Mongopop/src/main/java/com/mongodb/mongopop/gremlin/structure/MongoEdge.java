@@ -42,12 +42,11 @@ public class MongoEdge extends MongoElement implements Edge {
     }
 
     public Vertex inVertex() {
-        return (Vertex) document.get("inVertex");
+        return graph.vertices(document.get("inVertex")).next();
     }
 
     public Vertex outVertex() {
-        //TODO: this cast caused an error
-        return (Vertex) document.get("outVertex");
+        return graph.vertices(document.get("outVertex")).next();
     }
 
     public Iterator<Vertex> vertices(Direction direction) {
