@@ -84,13 +84,19 @@ public class MongoVertex extends MongoElement implements Vertex{
         if (label.equals("")) {
             throw Element.Exceptions.labelCanNotBeEmpty();
         }
-        MongoEdge mongoEdge = new MongoEdge(label, inVertex.id(), this.id(),document, graph, keyValues);
+        MongoEdge mongoEdge = new MongoEdge(label, inVertex.id(), this.id(), document, graph, keyValues);
         mongoEdge.save();
         return mongoEdge;
     }
 
+    public <V> VertexProperty<V> property(String key, V value) {
+        document = collection.findOneAndUpdate(Filters.eq(document.get("_id")),
+                Updates.set(key, value),
+                new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER));
+        return (VertexProperty<V>)new MongoVertexProperty<V>(this, key, value);
+    }
+
     public <V> VertexProperty<V> property(VertexProperty.Cardinality cardinality, String key, V value, Object... keyValues) {
-        //TODO: need a null check here, either collection is null or find returns null
         document = collection.findOneAndUpdate(Filters.eq(document.get("_id")),
                 Updates.set(key, value),
         new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER));
@@ -99,6 +105,9 @@ public class MongoVertex extends MongoElement implements Vertex{
 
     public <V> Iterator<VertexProperty<V>> properties(String... propertyKeys) {
         Document doc = collection.find(Filters.eq(document.get("_id"))).first();
+        if (doc.entrySet().stream().filter(x -> x.getKey() != "_id" && x.getKey() != "label" && (Arrays.stream(propertyKeys).anyMatch(x.getKey()::equals) || propertyKeys.length == 0)) == null) { 
+            return null;
+        }
         return doc.entrySet().stream()
             .filter(x -> x.getKey() != "_id" && x.getKey() != "label" && (Arrays.stream(propertyKeys).anyMatch(x.getKey()::equals) || propertyKeys.length == 0))
             .map(x -> (VertexProperty<V>)(new MongoVertexProperty<V>(this, x.getKey(), (V)(x.getValue()))))

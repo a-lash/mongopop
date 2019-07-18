@@ -25,10 +25,10 @@ public class MongoProperty<T> implements Property<T> {
     T value;
     String key;
 
-    protected MongoProperty(Element el, T val, String k) {
+    protected MongoProperty(Element el, String k, T val) {
         element = el;
-        value = val;
         key = k;
+        value = val;
     }
 
     public Element element() {
