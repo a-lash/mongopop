@@ -22,9 +22,11 @@ import java.util.*;
 
 public class MongoGraphProvider extends AbstractGraphProvider {
 
+    private static final String MONGODB_CONFIG_PREFIX = "gremlin.mongodb";
+
     @Override
     public void clear(Graph graph, Configuration configuration) throws Exception {
-        ConnectionString url = new ConnectionString("mongodb://localhost:27018/test");
+        ConnectionString url = new ConnectionString(configuration.getString(MONGODB_CONFIG_PREFIX + ".connectionUrl"));
         MongoClient client = MongoClients.create(url);
         client.getDatabase(url.getDatabase()).drop();
         client.close();

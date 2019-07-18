@@ -16,6 +16,9 @@
 package com.mongodb.mongopop.gremlin;
 
 import com.mongodb.mongopop.gremlin.structure.*;
+import com.mongodb.mongopop.gremlin.traversal.MongoGraphTraversal;
+import com.mongodb.mongopop.gremlin.traversal.MongoGraphTraversalSource;
+
 import org.apache.tinkerpop.gremlin.jsr223.AbstractGremlinPlugin;
 import org.apache.tinkerpop.gremlin.jsr223.DefaultImportCustomizer;
 import org.apache.tinkerpop.gremlin.jsr223.ImportCustomizer;
@@ -38,7 +41,9 @@ public final class MongoPlugin extends AbstractGremlinPlugin {
                             MongoProperty.class,
                             TinkerProperty.class,
                             MongoVertexProperty.class,
-                            MongoVertex.class).create();
+                            MongoVertex.class,
+                            MongoGraphTraversalSource.class,
+                            MongoGraphTraversal.class).create();
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
