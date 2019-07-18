@@ -1,12 +1,22 @@
 package com.mongodb.mongopop.gremlin.traversal;
 
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Graph;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 
-public class MongoGraphTraversal extends GraphTraversalSource {
+public class MongoGraphTraversal implements GraphTraversal {
+    
+    public MongoGraphTraversal() {
 
-    public MongoGraphTraversal(Graph graph) {
-        super(graph);
     }
+
+    @Override
+    public boolean hasNext() {
+        return false;
+    }
+
+    @Override
+    public Object next() {
+        return null;
+    }
+
     
 }
