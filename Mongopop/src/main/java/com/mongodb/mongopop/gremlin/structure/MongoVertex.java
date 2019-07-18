@@ -79,9 +79,7 @@ public class MongoVertex extends MongoElement implements Vertex{
     }
 
     public <V> VertexProperty<V> property(VertexProperty.Cardinality cardinality, String key, V value, Object... keyValues) {
-        document = collection.findOneAndUpdate(Filters.eq(document.get("_id")),
-                Updates.set(key, value),
-        new FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER));
+        collection.updateOne(Filters.eq(document.get("_id")), Updates.set(key, value));
         return new MongoVertexProperty<V>(this, key, value, cardinality);
     }
 
