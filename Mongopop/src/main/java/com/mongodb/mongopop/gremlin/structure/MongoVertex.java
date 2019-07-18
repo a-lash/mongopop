@@ -103,9 +103,9 @@ public class MongoVertex extends MongoElement implements Vertex{
         return super.label();
     }
 
-    public Graph graph() {
-        return super.graph();
-    }
+    // public Graph graph() {
+      //   return super.graph();
+    // }
 
 
 }
