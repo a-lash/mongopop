@@ -74,12 +74,12 @@ public class MongoGraph implements Graph {
 
     public <C extends GraphComputer> C compute(Class<C> graphComputerClass) throws IllegalArgumentException {
         //TODO(implemented)
-        return null;
+        throw Graph.Exceptions.graphComputerNotSupported();
     }
 
     public GraphComputer compute() throws IllegalArgumentException {
         //TODO(implemented)        
-        return null;
+        throw Graph.Exceptions.graphComputerNotSupported();
     }
 
     public Iterator<Vertex> vertices(Object... vertexIds) {
@@ -142,7 +142,7 @@ public class MongoGraph implements Graph {
 
     public Transaction tx() {
         //TODO(implemented)
-        return null;
+            throw Graph.Exceptions.transactionsNotSupported();
     }
 
     public void close() throws Exception {

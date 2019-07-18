@@ -49,7 +49,7 @@ public class MongoVertexProperty<T> implements VertexProperty {
 
     @Override
     public Iterator<Property> properties(String... propertyKeys) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -59,7 +59,7 @@ public class MongoVertexProperty<T> implements VertexProperty {
 
     @Override
     public <V> Property<V> property(String key, V value) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 }
 //TODO: properties should not be equal to each other if they have different ids and they should be if ids are equal
