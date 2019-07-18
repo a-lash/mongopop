@@ -79,12 +79,11 @@ public class MongoVertex extends MongoElement implements Vertex{
     }
 
     public <V> Iterator<VertexProperty<V>> properties(String... propertyKeys) {
-        Document document = null;
-        document = collection.find(Filters.eq(document.get("_id"))).first();
-        Iterator<VertexProperty<V>> result = document.entrySet().stream().filter(x -> x.getKey() != "_id" && x.getKey() != "label"
-                && (Arrays.stream(propertyKeys).anyMatch(x.getKey()::equals) || propertyKeys.length == 0))
-                .map(x -> (VertexProperty<V>)(new MongoVertexProperty<V>(this, x.getKey(), (V)(x.getValue())))).collect(Collectors.toList()).iterator();
-        return result;
+        Document doc = collection.find(Filters.eq(document.get("_id"))).first();
+        return doc.entrySet().stream()
+            .filter(x -> x.getKey() != "_id" && x.getKey() != "label" && (Arrays.stream(propertyKeys).anyMatch(x.getKey()::equals) || propertyKeys.length == 0))
+            .map(x -> (VertexProperty<V>)(new MongoVertexProperty<V>(this, x.getKey(), (V)(x.getValue()))))
+            .collect(Collectors.toList()).iterator();
     }
 
     public Iterator<Vertex> vertices(Direction direction, String... edgeLabels) {
