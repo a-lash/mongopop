@@ -21,6 +21,7 @@ public class MongoEdge extends MongoElement implements Edge {
     public MongoEdge(Document document, MongoGraph graph) {
         super(document, graph);
         collection = graph.edges;
+        document.append("_id",T.id.getAccessor());
         document.append(T.label.toString(), "DEFAULT LABEL");
     }
 
