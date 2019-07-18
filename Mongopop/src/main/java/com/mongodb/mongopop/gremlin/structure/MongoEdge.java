@@ -15,6 +15,7 @@ import org.apache.commons.collections.IteratorUtils;
 import org.apache.tinkerpop.gremlin.structure.*;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerProperty;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 public class MongoEdge extends MongoElement implements Edge {
 
@@ -30,9 +31,9 @@ public class MongoEdge extends MongoElement implements Edge {
         for(int i = 0; i < keyValues.length; i += 2) {
             Object[] chunk = Arrays.copyOfRange(keyValues, i, Math.min(keyValues.length, i + 2));
             String key = chunk[0].toString();
-            String toAppend = (key == T.id.getAccessor()) ? "_id" : key;
-            document.append(toAppend, chunk[1]);
+            document.append(key, chunk[1]);
         }
+        document.append("_id", new ObjectId());
         collection = graph.edges;
         document.append(T.label.toString(), label);
         document.append("inVertex", inVertex);
