@@ -16,13 +16,23 @@ import java.util.stream.StreamSupport;
 
 public class MongoVertex extends MongoElement implements Vertex{
 
-    protected MongoVertex(Document document, MongoGraph graph, Object... keyValues) {
+    protected MongoVertex(Document document, MongoGraph graph, Object... keyValues) throws IllegalArgumentException{
         super(document, graph);
         Document properties = new Document();
         for(int i = 0; i < keyValues.length; i += 2) {
             Object[] chunk = Arrays.copyOfRange(keyValues, i, Math.min(keyValues.length, i + 2));
             String key = chunk[0].toString();
-            if(key == T.id.getAccessor()) {
+            if (key == T.label.getAccessor()) {
+                if (chunk[1] == null) {
+                    Element.Exceptions.labelCanNotBeNull();
+                }
+                if (chunk[1].equals("") ) {
+                    Element.Exceptions.labelCanNotBeEmpty();
+                }
+                
+                document.append(key, chunk[1]);
+            }
+            if (key == T.id.getAccessor()) {
                 document.append("_id", chunk[1]);
             }
             else {
@@ -36,8 +46,14 @@ public class MongoVertex extends MongoElement implements Vertex{
     }
 
     // TODO: should use default label of "vertex" if no label is specified
-    protected MongoVertex(Document document, MongoGraph graph, String label) {
+    protected MongoVertex(Document document, MongoGraph graph, String label) throws IllegalArgumentException{
         super(document, graph);
+        if (label == null) {
+            Element.Exceptions.labelCanNotBeNull();
+        }
+        if (label.equals("")) {
+            Element.Exceptions.labelCanNotBeEmpty();
+        }
         collection = graph.vertices;
         document.append(T.label.getAccessor(), label);
     }
@@ -60,12 +76,15 @@ public class MongoVertex extends MongoElement implements Vertex{
     }
 
     @Override
-    public MongoEdge addEdge(String label, Vertex inVertex, Object... keyValues) throws UnsupportedOperationException {
+    public MongoEdge addEdge(String label, Vertex inVertex, Object... keyValues) throws IllegalArgumentException {
         //TODO: also figure out what a system key is and check that label is not that when adding edge
-        if (label == "" || label == null) {
-            throw Vertex.Exceptions.userSuppliedIdsNotSupported();
+        if (label == null) {
+            throw Element.Exceptions.labelCanNotBeNull();
         }
-        MongoEdge mongoEdge = new MongoEdge(label, this.id(), inVertex.id(), document, graph, keyValues);
+        if (label.equals("")) {
+            throw Element.Exceptions.labelCanNotBeEmpty();
+        }
+        MongoEdge mongoEdge = new MongoEdge(label, inVertex.id(), this.id(),document, graph, keyValues);
         mongoEdge.save();
         return mongoEdge;
     }

@@ -24,10 +24,10 @@ public class MongoGraphProvider extends AbstractGraphProvider {
 
     @Override
     public void clear(Graph graph, Configuration configuration) throws Exception {
-        // ConnectionString url = new ConnectionString("mongodb+srv://tpop:TinkerPop3@mongopop-hakmv.mongodb.net/mongopop?retryWrites=true&w=majority");
-        // MongoClient client = MongoClients.create(url);
-        // client.getDatabase(url.getDatabase()).drop();
-        // client.close();
+        ConnectionString url = new ConnectionString("mongodb://localhost:27018/test");
+        MongoClient client = MongoClients.create(url);
+        client.getDatabase(url.getDatabase()).drop();
+        client.close();
         return;
     }
 
