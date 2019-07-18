@@ -75,12 +75,11 @@ public class MongoEdge extends MongoElement implements Edge {
     }
 
     public <V> Iterator<Property<V>> properties(String... propertyKeys) {
-        Document document = null;
-        //TODO: need to a null check below, either collection or find is null
-        document = collection.find(Filters.eq(document.get("_id"))).first();
-        Iterator<Property<V>> result = document.entrySet().stream().filter(x -> x.getKey() != "_id" && x.getKey() != "label" && x.getKey() != "inVertex" && x.getKey() != "outVertex")
-                .map(x -> (Property<V>)(new TinkerProperty<V>(this, x.getKey(), (V)(x.getValue())))).collect(Collectors.toList()).iterator();
-        return result;
+        Document doc = collection.find(Filters.eq(document.get("_id"))).first();
+        return doc.entrySet().stream()
+            .filter(x -> x.getKey() != "_id" && x.getKey() != "label" && x.getKey() != "inVertex" && x.getKey() != "outVertex")
+            .map(x -> (Property<V>)(new TinkerProperty<V>(this, x.getKey(), (V)(x.getValue()))))
+            .collect(Collectors.toList()).iterator();
     }
 
     public <V> Property<V> property(String key, V value) {
