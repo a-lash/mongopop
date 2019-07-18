@@ -67,7 +67,7 @@ public class MongoGraph implements Graph {
     }
 
     public Vertex addVertex() {
-        MongoVertex mongoVertex = new MongoVertex(new Document(), this, "vertex");
+        MongoVertex mongoVertex = new MongoVertex(new Document(), this, "DEFAULT VERTEX");
         mongoVertex.save();
         return mongoVertex;
     }
@@ -83,22 +83,35 @@ public class MongoGraph implements Graph {
     }
 
     public Iterator<Vertex> vertices(Object... vertexIds) {
-        List<Object> ids = Arrays.asList(vertexIds).stream().map(it -> new ObjectId(it.toString())).collect(Collectors.toList());
         if (vertexIds.length == 0) {
             return vertices.find().map(it -> (Vertex)new MongoVertex(it, this)).iterator();
         }
-        return vertices.find(Filters.in("_id", ids)).map(it -> (Vertex)new MongoVertex(it, this)).iterator();
+        else {
+            if (vertexIds[0] instanceof Vertex) {
+                List<Object> ids = Arrays.asList(vertexIds).stream().map(it -> ((Vertex) it).id()).collect(Collectors.toList());
+                return vertices.find(Filters.in("_id", ids)).map(it -> (Vertex)new MongoVertex(it, this)).iterator();
+            }
+            else {
+                List<Object> ids = Arrays.asList(vertexIds);
+                return vertices.find(Filters.in("_id", ids)).map(it -> (Vertex)new MongoVertex(it, this)).iterator();
+            }
+        }
     }
 
     public Iterator<Edge> edges(Object... edgeIds) {
-
         if (edgeIds.length == 0) {
             return edges.find().map(it -> (Edge)new MongoEdge(it, this)).iterator();
         }
-
-        List<Object> ids = Arrays.asList(edgeIds).stream().map(it -> new ObjectId(it.toString())).collect(Collectors.toList());
-
-        return edges.find(Filters.in("_id", ids)).map(it -> (Edge)new MongoEdge(it, this)).iterator();
+        else {
+            if (edgeIds[0] instanceof Edge) {
+                List<Object> ids = Arrays.asList(edgeIds).stream().map(it -> ((Edge) it).id()).collect(Collectors.toList());
+                return edges.find(Filters.in("_id", ids)).map(it -> (Edge)new MongoEdge(it, this)).iterator();
+            }
+            else {
+                List<Object> ids = Arrays.asList(edgeIds);
+                return edges.find(Filters.in("_id", ids)).map(it -> (Edge)new MongoEdge(it, this)).iterator();
+            }
+        }
     }
 
 //    public Iterator<Edge> edges(Direction direction, Object... edgeIds) {
