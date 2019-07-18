@@ -54,7 +54,7 @@ public class MongoVertexProperty<T> implements VertexProperty {
 
     @Override
     public Object id() {
-        return "";
+        return _vertex.id();
     }
 
     @Override
