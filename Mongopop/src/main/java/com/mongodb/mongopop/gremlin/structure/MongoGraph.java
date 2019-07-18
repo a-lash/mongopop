@@ -45,8 +45,7 @@ public class MongoGraph implements Graph {
 
     public MongoGraph(Configuration conf) {
         System.out.println("is running...");
-        // ConnectionString url = new ConnectionString(conf.getString(MONGODB_CONFIG_PREFIX + ".connectionUrl"));
-        ConnectionString url = new ConnectionString("mongodb://localhost:27017/test");
+        ConnectionString url = new ConnectionString(conf.getString(MONGODB_CONFIG_PREFIX + ".connectionUrl"));
         this.client = MongoClients.create(url);
         this.db = client.getDatabase(url.getDatabase());
         this.vertices = db.getCollection("vertices");
@@ -92,10 +91,13 @@ public class MongoGraph implements Graph {
     }
 
     public Iterator<Edge> edges(Object... edgeIds) {
-        List<Object> ids = Arrays.asList(edgeIds).stream().map(it -> new ObjectId(it.toString())).collect(Collectors.toList());
+
         if (edgeIds.length == 0) {
             return edges.find().map(it -> (Edge)new MongoEdge(it, this)).iterator();
         }
+
+        List<Object> ids = Arrays.asList(edgeIds).stream().map(it -> new ObjectId(it.toString())).collect(Collectors.toList());
+
         return edges.find(Filters.in("_id", ids)).map(it -> (Edge)new MongoEdge(it, this)).iterator();
     }
 
